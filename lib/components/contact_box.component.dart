@@ -9,13 +9,50 @@ class ContactBoxComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-      child: Text(
-        "Nome: ${contact.name}",
-        style: TextStyle(
-          color: Colors.white,
+      height: 100,
+      padding: EdgeInsets.only(left: 5, right: 5),
+      margin: EdgeInsets.only(top: 5, bottom: 5),
+      child: Center(
+        child: Row(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10),
+              child: CircleAvatar(
+                radius: 35,
+                backgroundImage: NetworkImage(
+                  contact.img
+                ),
+              ),
+            ),
+            VerticalDivider(
+              width: 20,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  contact.username,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+                Divider(
+                  height: 5,
+                ),
+                Text(
+                  contact.name,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
-      )
+      ),
     );
   }
 }

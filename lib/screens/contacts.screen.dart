@@ -20,7 +20,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF1D1E20),
       body: Flex(
         direction: Axis.vertical,
         children: <Widget>[
@@ -38,7 +38,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: 10,
+                    itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int i) => ContactBoxComponent(snapshot.data[i]),
                   ),
                 );

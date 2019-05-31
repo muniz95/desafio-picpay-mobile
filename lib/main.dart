@@ -1,4 +1,4 @@
-import 'package:desafio_picpay_mobile/services/contacts.screen.dart';
+import 'package:desafio_picpay_mobile/screens/contacts.screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
