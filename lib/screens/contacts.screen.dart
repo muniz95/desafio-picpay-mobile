@@ -10,6 +10,10 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   ContactsBloc _bloc;
+  TextEditingController editingController = TextEditingController();
+
+  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
+  var items = List<String>();
 
   @override
   void initState() {
@@ -31,8 +35,21 @@ class _ContactsScreenState extends State<ContactsScreen> {
               child: Text("Contatos", style: TextStyle(fontSize: 18, color: Colors.white),),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: _bloc.filterContacts,
+              controller: editingController,
+              decoration: InputDecoration(
+                  labelText: "Search",
+                  hintText: "Search",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+            ),
+          ),
           StreamBuilder<List<Contact>>(
-            stream: _bloc.contacts,
+            stream: _bloc.filteredContacts,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Expanded(
