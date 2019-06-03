@@ -21,7 +21,7 @@ class ContactsBloc {
     if(query.isNotEmpty) {
       List<Contact> dummyListData = List<Contact>();
       dummySearchList.forEach((item) {
-        if(item.name.contains(query)) {
+        if(item.name.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });
