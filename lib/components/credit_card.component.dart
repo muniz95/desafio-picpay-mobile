@@ -32,36 +32,53 @@ class CreditCardComponent extends StatelessWidget {
               margin: EdgeInsets.only(right: 15),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.yellow,
+                color: Colors.red,
                 borderRadius: BorderRadius.circular(3),
               ),
-              child: Row(
+              child: GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                mainAxisSpacing: 1.0,
+                crossAxisSpacing: 1.0,
                 children: <Widget>[
-                  Container(
-                    color: Colors.green,
-                  ),
-                  VerticalDivider(
-                    color: Colors.red,
-                  ),
-                  IntrinsicWidth(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(color: Colors.red,)
-                        ),
-                        Expanded(
-                          child: Container(color: Colors.red,)
-                        ),
-                        Expanded(
-                          child: Container(color: Colors.red,)
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                  GridTile(child: Container(decoration: BoxDecoration(color: Colors.yellow),)),
+                ]
               ),
+              // child: Row(
+              //   children: <Widget>[
+              //     Container(
+              //       color: Colors.green,
+              //     ),
+              //     VerticalDivider(
+              //       color: Colors.red,
+              //     ),
+              //     IntrinsicWidth(
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         crossAxisAlignment: CrossAxisAlignment.stretch,
+              //         children: <Widget>[
+              //           Expanded(
+              //             child: Container(color: Colors.red,)
+              //           ),
+              //           Expanded(
+              //             child: Container(color: Colors.red,)
+              //           ),
+              //           Expanded(
+              //             child: Container(color: Colors.red,)
+              //           ),
+              //         ],
+              //       ),
+              //     )
+              //   ],
+              // ),
             ),
             Divider(
               color: Colors.transparent,
