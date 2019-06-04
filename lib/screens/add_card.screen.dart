@@ -10,8 +10,12 @@ class _AddCardScreenState extends State<AddCardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1D1E20),
+        iconTheme: IconThemeData(
+          color: Colors.green
+        ),
       ),
+      backgroundColor: const Color(0xFF1D1E20),
       body: Container(
         child: Center(
           child: Text("Adicionar cartão"),
