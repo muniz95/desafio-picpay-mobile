@@ -128,26 +128,24 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
-                alignment: Alignment.bottomCenter,
-                child: ButtonTheme(
-                  height: 50,
-                  minWidth: double.infinity,
-                  child: FlatButton(
-                    onPressed: () {
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => AddNewCardScreen()
-                      //   ),
-                      // );
-                    },
-                    color: Colors.green,
-                    child: Text("Salvar"),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)
-                    ),
+            Container(
+              margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+              alignment: Alignment.bottomCenter,
+              child: ButtonTheme(
+                height: 50,
+                minWidth: double.infinity,
+                child: FlatButton(
+                  onPressed: () {
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (BuildContext context) => AddNewCardScreen()
+                    //   ),
+                    // );
+                  },
+                  color: Colors.green,
+                  child: Text("Salvar"),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)
                   ),
                 ),
               ),
