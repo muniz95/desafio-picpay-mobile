@@ -1,5 +1,5 @@
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
-import 'package:desafio_picpay_mobile/screens/add_card.screen.dart';
+import 'package:desafio_picpay_mobile/screens/no_card_found.screen.dart';
 import 'package:flutter/material.dart';
 
 class ContactBoxComponent extends StatelessWidget {
@@ -13,7 +13,7 @@ class ContactBoxComponent extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (BuildContext context) => AddCardScreen(),
+            builder: (BuildContext context) => NoCardFoundScreen(),
           )
         );
       },

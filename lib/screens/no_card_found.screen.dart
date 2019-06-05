@@ -1,12 +1,13 @@
 import 'package:desafio_picpay_mobile/components/credit_card.component.dart';
+import 'package:desafio_picpay_mobile/screens/add_new_card.screen.dart';
 import 'package:flutter/material.dart';
 
-class AddCardScreen extends StatefulWidget {
+class NoCardFoundScreen extends StatefulWidget {
   @override
-  _AddCardScreenState createState() => _AddCardScreenState();
+  _NoCardFoundScreenState createState() => _NoCardFoundScreenState();
 }
 
-class _AddCardScreenState extends State<AddCardScreen> {
+class _NoCardFoundScreenState extends State<NoCardFoundScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +49,30 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   textAlign: TextAlign.center,
                 ),
               ),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                  alignment: Alignment.bottomCenter,
+                  child: ButtonTheme(
+                    height: 50,
+                    minWidth: double.infinity,
+                    child: FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => AddNewCardScreen()
+                          ),
+                        );
+                      },
+                      color: Colors.green,
+                      child: Text("Adicionar um cartão"),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
