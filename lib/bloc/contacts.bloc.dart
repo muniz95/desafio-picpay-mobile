@@ -7,9 +7,13 @@ class ContactsBloc {
 
   BehaviorSubject<List<Contact>> _contacts = BehaviorSubject<List<Contact>>();
   BehaviorSubject<List<Contact>> _filteredContacts = BehaviorSubject<List<Contact>>();
+  BehaviorSubject<Contact> _selectedContact = BehaviorSubject<Contact>();
 
   Stream<List<Contact>> get contacts => _contacts.stream;
   Stream<List<Contact>> get filteredContacts => _filteredContacts.stream;
+  Contact get selectedContact => _selectedContact.stream.value;
+
+  Function(Contact) get select => _selectedContact.sink.add;
 
   Future getAllContacts() async {
     _contacts.add(await _service.getAllContacts());
@@ -35,5 +39,6 @@ class ContactsBloc {
   void dispose() {
     _contacts.close();
     _filteredContacts.close();
+    _selectedContact.close();
   }
 }

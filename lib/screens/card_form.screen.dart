@@ -1,11 +1,24 @@
+import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
+import 'package:desafio_picpay_mobile/bloc/provider.dart';
+import 'package:desafio_picpay_mobile/screens/payment.screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class AddNewCardScreen extends StatefulWidget {
+class CardFormScreen extends StatefulWidget {
   @override
-  _AddNewCardScreenState createState() => _AddNewCardScreenState();
+  _CardFormScreenState createState() => _CardFormScreenState();
 }
 
-class _AddNewCardScreenState extends State<AddNewCardScreen> {
+class _CardFormScreenState extends State<CardFormScreen> {
+  var _formKey = GlobalKey<FormState>();
+  CardBloc _bloc;
+
+  @override
+  void didChangeDependencies() {
+    _bloc ??= Provider.of(context).cardBloc;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +44,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
               textAlign: TextAlign.start,
             ),
             Form(
+              key: _formKey,
               child: Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -52,6 +66,9 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                             )
                           )
                         ),
+                        onSaved: (String val) {
+                          _bloc.setNumber(int.parse(val));
+                        },
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -73,6 +90,9 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                             )
                           )
                         ),
+                        onSaved: (String val) {
+                          _bloc.setTitular(val);
+                        },
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -95,6 +115,9 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                                   )
                                 )
                               ),
+                              onSaved: (String val) {
+                                _bloc.setExpiration(DateTime.now());
+                              },
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -116,6 +139,9 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                                   )
                                 )
                               ),
+                              onSaved: (String val) {
+                                _bloc.setCvv(int.parse(val));
+                              },
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -136,11 +162,17 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                 minWidth: double.infinity,
                 child: FlatButton(
                   onPressed: () {
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (BuildContext context) => AddNewCardScreen()
-                    //   ),
-                    // );
+                    var formState = _formKey.currentState;
+                    SystemChannels.textInput.invokeMethod('TextInput.hide');
+                    if (formState.validate()) {
+                      formState.save();
+                      _bloc.addCard();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => PaymentScreen()
+                        ),
+                      );
+                    }
                   },
                   color: Colors.green,
                   child: Text("Salvar"),

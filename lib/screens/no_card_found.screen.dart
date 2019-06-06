@@ -1,5 +1,5 @@
 import 'package:desafio_picpay_mobile/components/credit_card.component.dart';
-import 'package:desafio_picpay_mobile/screens/add_new_card.screen.dart';
+import 'package:desafio_picpay_mobile/screens/card_form.screen.dart';
 import 'package:flutter/material.dart';
 
 class NoCardFoundScreen extends StatefulWidget {
@@ -60,7 +60,7 @@ class _NoCardFoundScreenState extends State<NoCardFoundScreen> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (BuildContext context) => AddNewCardScreen()
+                            builder: (BuildContext context) => CardFormScreen()
                           ),
                         );
                       },

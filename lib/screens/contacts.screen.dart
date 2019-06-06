@@ -1,4 +1,5 @@
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
+import 'package:desafio_picpay_mobile/bloc/provider.dart';
 import 'package:desafio_picpay_mobile/components/contact_box.component.dart';
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
   var items = List<String>();
 
   @override
-  void initState() {
-    super.initState();
-    _bloc = ContactsBloc()..getAllContacts();
+  void didChangeDependencies() {
+    _bloc ??= Provider.of(context).contactsBloc..getAllContacts();
+    super.didChangeDependencies();
   }
   
   @override
@@ -61,7 +62,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int i) => ContactBoxComponent(snapshot.data[i]),
+                    itemBuilder: (BuildContext context, int i) => ContactBoxComponent(snapshot.data[i], _bloc),
                   ),
                 );
               }

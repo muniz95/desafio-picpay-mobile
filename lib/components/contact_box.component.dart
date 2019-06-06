@@ -1,16 +1,19 @@
+import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
 import 'package:desafio_picpay_mobile/screens/no_card_found.screen.dart';
 import 'package:flutter/material.dart';
 
 class ContactBoxComponent extends StatelessWidget {
   final Contact contact;
+  final ContactsBloc bloc;
   
-  ContactBoxComponent(this.contact);
+  ContactBoxComponent(this.contact, this.bloc);
   
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        bloc.select(contact);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) => NoCardFoundScreen(),
