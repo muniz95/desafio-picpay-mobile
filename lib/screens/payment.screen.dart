@@ -1,6 +1,7 @@
 import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -64,6 +65,54 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 color: Colors.grey,
               ),
               textAlign: TextAlign.right,
+            ),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  _cardBloc.card.number.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    " . ",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: Text("Editar"),
+                  color: Colors.red,
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+              alignment: Alignment.bottomCenter,
+              child: ButtonTheme(
+                height: 50,
+                minWidth: double.infinity,
+                child: FlatButton(
+                  onPressed: () {
+                    print("aehOOOOOOOO");
+                  },
+                  color: Colors.green,
+                  child: Text("Pagar"),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                ),
+              ),
             ),
           ),
         ],

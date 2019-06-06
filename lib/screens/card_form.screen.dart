@@ -10,8 +10,30 @@ class CardFormScreen extends StatefulWidget {
 }
 
 class _CardFormScreenState extends State<CardFormScreen> {
+  FocusNode _focus = new FocusNode();
   var _formKey = GlobalKey<FormState>();
   CardBloc _bloc;
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null){
+      String month = picked.month > 9 
+        ? "${picked.month}"
+        : "0${picked.month}";
+      String year = picked.year.toString().substring(2);
+      _bloc.setExpiration("$month/$year");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _focus.addListener(() => _selectDate(context));
+  }
 
   @override
   void didChangeDependencies() {
@@ -66,6 +88,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                             )
                           )
                         ),
+                        keyboardType: TextInputType.number,
                         onSaved: (String val) {
                           _bloc.setNumber(int.parse(val));
                         },
@@ -103,24 +126,43 @@ class _CardFormScreenState extends State<CardFormScreen> {
                         Expanded(
                           child: Container(
                             padding: EdgeInsets.only(left: 5, right: 5),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                hintText: "Vencimento",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.green
-                                  )
-                                )
-                              ),
-                              onSaved: (String val) {
-                                _bloc.setExpiration(DateTime.now());
+                            child: FlatButton(
+                              onPressed: () {
+                                _selectDate(context);
                               },
-                              style: TextStyle(
-                                color: Colors.white,
+                              child: StreamBuilder<String>(
+                                stream: _bloc.expiration,
+                                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                  return Text(
+                                    snapshot.hasData ? snapshot.data : "mm/aa",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                },
                               ),
+                              // child: TextFormField(
+                              //   enabled: false,
+                              //   initialValue: _bloc.expiration,
+                              //   decoration: InputDecoration(
+                              //     hintText: "Vencimento",
+                              //     hintStyle: TextStyle(
+                              //       color: Colors.grey,
+                              //     ),
+                              //     focusedBorder: UnderlineInputBorder(
+                              //       borderSide: BorderSide(
+                              //         color: Colors.green
+                              //       )
+                              //     )
+                              //   ),
+                              //   focusNode: _focus,
+                              //   onSaved: (String val) {
+                              //     _bloc.setExpiration(DateTime.now());
+                              //   },
+                              //   style: TextStyle(
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
                             ),
                           ),
                         ),

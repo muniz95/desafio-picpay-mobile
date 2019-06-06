@@ -36,21 +36,36 @@ class _ContactsScreenState extends State<ContactsScreen> {
               child: Text("Contatos", style: TextStyle(fontSize: 18, color: Colors.white),),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: _bloc.filterContacts,
-              controller: editingController,
-              decoration: InputDecoration(
-                labelText: "Search",
-                hintText: "Search",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0))
-                )
+          Center(
+            child: Container(
+              margin: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: Colors.grey[800],
               ),
-              style: TextStyle(
-                color: Colors.white,
+              child: Container(
+                margin: EdgeInsets.only(left: 50, right: 50),
+                child: TextField(
+                  onChanged: _bloc.filterContacts,
+                  controller: editingController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    prefixIcon: Icon(Icons.search),
+                    prefixStyle: TextStyle(
+                      color: Colors.grey[50],
+                      decorationColor: Colors.red,
+                    ),
+                    labelText: "A quem você deseja pagar?",
+                    labelStyle: TextStyle(
+                      color: Colors.grey[50],
+                    ),
+                  ),
+                  cursorRadius: Radius.circular(15),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                  textCapitalization: TextCapitalization.words,
+                ),
               ),
             ),
           ),

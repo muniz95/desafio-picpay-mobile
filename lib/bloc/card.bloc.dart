@@ -3,7 +3,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CardBloc {
   BehaviorSubject<Card> _card = BehaviorSubject<Card>();
-  Stream<Card> get card => _card.stream;
+  Card get card => _card.stream.value;
   
   BehaviorSubject<int> _number = BehaviorSubject<int>();
   Function(int) get setNumber => _number.sink.add;
@@ -11,8 +11,9 @@ class CardBloc {
   BehaviorSubject<String> _titular = BehaviorSubject<String>();
   Function(String) get setTitular => _titular.sink.add;
   
-  BehaviorSubject<DateTime> _expiration = BehaviorSubject<DateTime>();
-  Function(DateTime) get setExpiration => _expiration.sink.add;
+  BehaviorSubject<String> _expiration = BehaviorSubject<String>();
+  Stream<String> get expiration => _expiration.stream;
+  Function(String) get setExpiration => _expiration.sink.add;
   
   BehaviorSubject<int> _cvv = BehaviorSubject<int>();
   Function(int) get setCvv => _cvv.sink.add;
