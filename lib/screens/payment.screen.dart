@@ -1,6 +1,8 @@
 import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
+import 'package:desafio_picpay_mobile/bloc/payment.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
+import 'package:desafio_picpay_mobile/screens/contacts.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,11 +16,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final _moneyInputFormatter = _MoneyInputFormatter();
   CardBloc _cardBloc;
   ContactsBloc _contactsBloc;
+  PaymentBloc _paymentBloc;
+  Color _textColor = Colors.grey;
+  bool _paymentButtonEnabled = false;
+  final TextEditingController _controller = TextEditingController(text: '0.00');
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _paymentBloc = PaymentBloc();
+  // }
 
   @override
   void didChangeDependencies() {
     _cardBloc ??= Provider.of(context).cardBloc;
     _contactsBloc ??= Provider.of(context).contactsBloc;
+    if(_paymentBloc == null) {
+      _paymentBloc = Provider.of(context).paymentBloc;
+      _paymentBloc.payment.listen((value) {
+        if (value > 0.99) {
+          setState(() {
+            _textColor = Colors.green;
+            _paymentButtonEnabled = true;
+          });
+        }
+        else {
+          setState(() {
+            _textColor = Colors.grey;
+            _paymentButtonEnabled = false;
+          });
+        }
+      });
+    }
     super.didChangeDependencies();
   }
 
@@ -61,13 +90,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Container(
             padding: EdgeInsets.only(right: 100, left: 100),
             child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                prefixText: "R\$",
+                prefixStyle: TextStyle(
+                  color: _textColor,
+                ),
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+                _paymentBloc.setPayment(double.parse(value));
+              },
               inputFormatters: <TextInputFormatter>[
                 _moneyInputFormatter
               ],
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               style: TextStyle(
                 fontSize: 42,
-                color: Colors.grey,
+                color: _textColor,
               ),
               textAlign: TextAlign.right,
             ),
@@ -77,7 +117,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  _cardBloc.card.number.toString(),
+                  "${_cardBloc.card.flagship} ${_cardBloc.card.finalDigits}",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -85,18 +125,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 Container(
                   child: Text(
-                    " . ",
+                    " • ",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text("Editar"),
-                  color: Colors.red,
-                )
+                InkWell(
+                  child: new Text(
+                    'Editar',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: () => print("aehOOOOOOOO")
+                ),
               ],
             ),
           ),
@@ -109,10 +154,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 minWidth: double.infinity,
                 child: FlatButton(
                   onPressed: () {
-                    print("aehOOOOOOOO");
+                    if (_paymentButtonEnabled) {
+                      _paymentBloc.createTransaction(
+                        _contactsBloc.selectedContact,
+                        _cardBloc.card,
+                        double.parse(_controller.text)
+                      );
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => ContactsScreen()
+                        )
+                      );
+                    }
                   },
-                  color: Colors.green,
-                  child: Text("Pagar"),
+                  color: _textColor,
+                  child: Text(
+                    "Pagar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)
                   ),

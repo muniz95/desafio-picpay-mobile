@@ -23,10 +23,35 @@ class CardBloc {
       Card(
         cvv: _cvv.value,
         expiration: _expiration.value,
+        flagship: _getFlagship(_cardNumber.value),
         number: int.parse(_cardNumber.value.split(" ").join()),
         titular: _titular.value,
       )
     );
+  }
+
+  String _getFlagship(String cardNumber) {
+    String firstDigit = cardNumber.substring(0, 1);
+    switch (firstDigit) {
+      case "2":
+        return "Mastercard";
+        break;
+      case "3":
+        return "American Express";
+        break;
+      case "4":
+        return "Visa";
+        break;
+      case "5":
+        return "Elo";
+        break;
+      case "6":
+        return "Discover";
+        break;
+      default:
+        return "N/A";
+        break;
+    }
   }
 
   void dispose() {
