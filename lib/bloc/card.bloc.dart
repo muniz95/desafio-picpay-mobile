@@ -11,9 +11,9 @@ class CardBloc {
   BehaviorSubject<String> _titular = BehaviorSubject<String>();
   Function(String) get setTitular => _titular.sink.add;
   
-  BehaviorSubject<String> _expiration = BehaviorSubject<String>();
-  Stream<String> get expiration => _expiration.stream;
-  Function(String) get setExpiration => _expiration.sink.add;
+  BehaviorSubject<DateTime> _expiration = BehaviorSubject<DateTime>();
+  Stream<DateTime> get expiration => _expiration.stream;
+  Function(DateTime) get setExpiration => _expiration.sink.add;
   
   BehaviorSubject<int> _cvv = BehaviorSubject<int>();
   Function(int) get setCvv => _cvv.sink.add;

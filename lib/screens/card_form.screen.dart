@@ -10,29 +10,31 @@ class CardFormScreen extends StatefulWidget {
 }
 
 class _CardFormScreenState extends State<CardFormScreen> {
-  FocusNode _focus = new FocusNode();
+  final _cardFormatter = _CreditCardInputFormatter();
+  final _monthYearFormatter = _MMYYInputFormatter();
+  FocusNode _focus = FocusNode();
   var _formKey = GlobalKey<FormState>();
   CardBloc _bloc;
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null){
-      String month = picked.month > 9 
-        ? "${picked.month}"
-        : "0${picked.month}";
-      String year = picked.year.toString().substring(2);
-      _bloc.setExpiration("$month/$year");
-    }
-  }
+  // Future<Null> _selectDate(BuildContext context) async {
+  //   final DateTime picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: DateTime.now(),
+  //     firstDate: DateTime(2015, 8),
+  //     lastDate: DateTime(2101),
+  //   );
+  //   if (picked != null){
+  //     String month = picked.month > 9 
+  //       ? "${picked.month}"
+  //       : "0${picked.month}";
+  //     String year = picked.year.toString().substring(2);
+  //     _bloc.setExpiration("$month/$year");
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    _focus.addListener(() => _selectDate(context));
+    // _focus.addListener(() => _selectDate(context));
   }
 
   @override
@@ -74,7 +76,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(bottom: 20),
-                      padding: EdgeInsets.only(left: 5, right: 5),
+                      padding: EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
                         cursorColor: Colors.green,
                         decoration: InputDecoration(
@@ -88,6 +90,10 @@ class _CardFormScreenState extends State<CardFormScreen> {
                             )
                           )
                         ),
+                        maxLength: 19,
+                        inputFormatters: <TextInputFormatter>[
+                          _cardFormatter,
+                        ],
                         keyboardType: TextInputType.number,
                         onSaved: (String val) {
                           _bloc.setNumber(int.parse(val));
@@ -99,7 +105,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                     ),
                     Container(
                       margin: EdgeInsets.only(bottom: 20),
-                      padding: EdgeInsets.only(left: 5, right: 5),
+                      padding: EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
                         cursorColor: Colors.green,
                         decoration: InputDecoration(
@@ -119,56 +125,65 @@ class _CardFormScreenState extends State<CardFormScreen> {
                         style: TextStyle(
                           color: Colors.white,
                         ),
+                        textCapitalization: TextCapitalization.words,
                       ),
                     ),
                     Row(
                       children: <Widget>[
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.only(left: 5, right: 5),
-                            child: FlatButton(
-                              onPressed: () {
-                                _selectDate(context);
-                              },
-                              child: StreamBuilder<String>(
-                                stream: _bloc.expiration,
-                                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                                  return Text(
-                                    snapshot.hasData ? snapshot.data : "mm/aa",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  );
-                                },
+                            padding: EdgeInsets.only(left: 15, right: 5),
+                            alignment: Alignment.centerLeft,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: "Vencimento",
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.green
+                                  )
+                                )
                               ),
-                              // child: TextFormField(
-                              //   enabled: false,
-                              //   initialValue: _bloc.expiration,
-                              //   decoration: InputDecoration(
-                              //     hintText: "Vencimento",
-                              //     hintStyle: TextStyle(
-                              //       color: Colors.grey,
-                              //     ),
-                              //     focusedBorder: UnderlineInputBorder(
-                              //       borderSide: BorderSide(
-                              //         color: Colors.green
-                              //       )
-                              //     )
-                              //   ),
-                              //   focusNode: _focus,
-                              //   onSaved: (String val) {
-                              //     _bloc.setExpiration(DateTime.now());
-                              //   },
-                              //   style: TextStyle(
-                              //     color: Colors.white,
-                              //   ),
-                              // ),
+                              focusNode: _focus,
+                              inputFormatters: <TextInputFormatter>[
+                                _monthYearFormatter,
+                              ],
+                              keyboardType: TextInputType.number,
+                              maxLength: 5,
+                              onSaved: (String val) {
+                                List<String> dateValues = val.split("/");
+                                int year = int.parse("20${dateValues[1]}");
+                                int month = int.parse(dateValues[0]);
+                                DateTime expiration = DateTime(year, month);
+                                _bloc.setExpiration(expiration);
+                              },
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
+                            // child: FlatButton(
+                            //   onPressed: () {
+                            //     _selectDate(context);
+                            //   },
+                            //   child: StreamBuilder<String>(
+                            //     stream: _bloc.expiration,
+                            //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+                            //       return Text(
+                            //         snapshot.hasData ? snapshot.data : "mm/aa",
+                            //         style: TextStyle(
+                            //           color: Colors.grey,
+                            //         ),
+                            //       );
+                            //     },
+                            //   ),
+                            // ),
                           ),
                         ),
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.only(left: 5, right: 5),
+                            padding: EdgeInsets.only(left: 5, right: 15),
                             child: TextFormField(
                               decoration: InputDecoration(
                                 hintText: "CVV",
@@ -181,6 +196,8 @@ class _CardFormScreenState extends State<CardFormScreen> {
                                   )
                                 )
                               ),
+                              keyboardType: TextInputType.number,
+                              maxLength: 3,
                               onSaved: (String val) {
                                 _bloc.setCvv(int.parse(val));
                               },
@@ -229,4 +246,46 @@ class _CardFormScreenState extends State<CardFormScreen> {
       ),
     );
   }
+}
+
+class _CreditCardInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final int newTextLength = newValue.text.length;
+    String formattedString = newValue.text;
+    if (oldValue.text.length < newValue.text.length) {
+      if ([4, 9, 14].contains(newTextLength)) {
+        formattedString = "${newValue.text} ";
+      }
+      else {
+        formattedString = "${newValue.text}";
+      }
+    }
+    return TextEditingValue(
+      text: formattedString,
+      selection: TextSelection.collapsed(offset: formattedString.length)
+    ); 
+  } 
+}
+
+class _MMYYInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    final int newTextLength = newValue.text.length;
+    String formattedString = newValue.text;
+    if (oldValue.text.length < newValue.text.length) {
+      if (newTextLength == 2) {
+        if (int.parse(newValue.text) > 12) {
+          formattedString = "12/";
+        }
+        else {
+          formattedString = "${newValue.text}/";
+        }
+      }
+    }
+    return TextEditingValue(
+      text: formattedString,
+      selection: TextSelection.collapsed(offset: formattedString.length)
+    ); 
+  } 
 }
