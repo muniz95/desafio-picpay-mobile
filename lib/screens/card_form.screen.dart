@@ -96,7 +96,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                         ],
                         keyboardType: TextInputType.number,
                         onSaved: (String val) {
-                          _bloc.setNumber(int.parse(val));
+                          _bloc.setNumber(val);
                         },
                         style: TextStyle(
                           color: Colors.white,

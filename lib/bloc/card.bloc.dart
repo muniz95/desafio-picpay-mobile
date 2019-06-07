@@ -5,8 +5,8 @@ class CardBloc {
   BehaviorSubject<Card> _card = BehaviorSubject<Card>();
   Card get card => _card.stream.value;
   
-  BehaviorSubject<int> _number = BehaviorSubject<int>();
-  Function(int) get setNumber => _number.sink.add;
+  BehaviorSubject<String> _cardNumber = BehaviorSubject<String>();
+  Function(String) get setNumber => _cardNumber.sink.add;
   
   BehaviorSubject<String> _titular = BehaviorSubject<String>();
   Function(String) get setTitular => _titular.sink.add;
@@ -23,7 +23,7 @@ class CardBloc {
       Card(
         cvv: _cvv.value,
         expiration: _expiration.value,
-        number: _number.value,
+        number: int.parse(_cardNumber.value.split(" ").join()),
         titular: _titular.value,
       )
     );
@@ -31,7 +31,7 @@ class CardBloc {
 
   void dispose() {
     _card.close();
-    _number.close();
+    _cardNumber.close();
     _titular.close();
     _expiration.close();
     _cvv.close();
