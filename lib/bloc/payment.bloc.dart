@@ -9,7 +9,7 @@ class PaymentBloc {
   Function(double) get setPayment => _payment.sink.add;
   
   BehaviorSubject<Transaction> _transaction = BehaviorSubject<Transaction>();
-  Stream<Transaction> get transaction => _transaction.stream;
+  Transaction get transaction => _transaction.stream.value;
 
   void createTransaction(Contact contact, Card card, double total) {
     _transaction.add(

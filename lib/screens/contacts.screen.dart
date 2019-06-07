@@ -1,4 +1,5 @@
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
+import 'package:desafio_picpay_mobile/bloc/payment.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
 import 'package:desafio_picpay_mobile/components/contact_box.component.dart';
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
@@ -10,7 +11,8 @@ class ContactsScreen extends StatefulWidget {
 }
 
 class _ContactsScreenState extends State<ContactsScreen> {
-  ContactsBloc _bloc;
+  ContactsBloc _contactsBloc;
+  PaymentBloc _paymentBloc;
   TextEditingController editingController = TextEditingController();
 
   final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
@@ -18,7 +20,35 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   void didChangeDependencies() {
-    _bloc ??= Provider.of(context).contactsBloc..getAllContacts();
+    _contactsBloc ??= Provider.of(context).contactsBloc..getAllContacts();
+    if(_paymentBloc == null) {
+      _paymentBloc = Provider.of(context).paymentBloc;
+      if (_paymentBloc.transaction != null) {
+        showModalBottomSheet<void>(context: context,
+          builder: (BuildContext context) {
+            return new Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                new ListTile(
+                  leading: new Icon(Icons.music_note),
+                  title: new Text('Music'),
+                  onTap: () {},          
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.photo_album),
+                  title: new Text('Photos'),
+                  onTap: () {},          
+                ),
+                new ListTile(
+                  leading: new Icon(Icons.videocam),
+                  title: new Text('Video'),
+                  onTap: () {},          
+                ),
+              ],
+            );
+        });
+      }
+    }
     super.didChangeDependencies();
   }
   
@@ -46,7 +76,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
               child: Container(
                 margin: EdgeInsets.only(left: 50, right: 50),
                 child: TextField(
-                  onChanged: _bloc.filterContacts,
+                  onChanged: _contactsBloc.filterContacts,
                   controller: editingController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -70,14 +100,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
           ),
           StreamBuilder<List<Contact>>(
-            stream: _bloc.filteredContacts,
+            stream: _contactsBloc.filteredContacts,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int i) => ContactBoxComponent(snapshot.data[i], _bloc),
+                    itemBuilder: (BuildContext context, int i) => ContactBoxComponent(snapshot.data[i], _contactsBloc),
                   ),
                 );
               }
