@@ -3,6 +3,7 @@ import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PaymentScreen extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  final _moneyInputFormatter = _MoneyInputFormatter();
   CardBloc _cardBloc;
   ContactsBloc _contactsBloc;
 
@@ -59,6 +61,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Container(
             padding: EdgeInsets.only(right: 100, left: 100),
             child: TextField(
+              inputFormatters: <TextInputFormatter>[
+                _moneyInputFormatter
+              ],
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               style: TextStyle(
                 fontSize: 42,
@@ -119,4 +124,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
     );
   }
+}
+
+class _MoneyInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    double cents = double.parse(newValue.text);
+    double formattedValue = 0;
+    if (oldValue.text.length <= newValue.text.length) {
+      formattedValue = cents * 10;
+    }
+    else {
+      formattedValue = cents / 10;
+    }
+    return TextEditingValue(
+      text: formattedValue.toStringAsFixed(2),
+      selection: TextSelection.collapsed(offset: formattedValue.toStringAsFixed(2).length)
+    ); 
+  } 
 }
