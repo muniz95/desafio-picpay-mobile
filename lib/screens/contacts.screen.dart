@@ -21,34 +21,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
   @override
   void didChangeDependencies() {
     _contactsBloc ??= Provider.of(context).contactsBloc..getAllContacts();
-    if(_paymentBloc == null) {
-      _paymentBloc = Provider.of(context).paymentBloc;
-      if (_paymentBloc.transaction != null) {
-        showModalBottomSheet<void>(context: context,
-          builder: (BuildContext context) {
-            return new Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                new ListTile(
-                  leading: new Icon(Icons.music_note),
-                  title: new Text('Music'),
-                  onTap: () {},          
-                ),
-                new ListTile(
-                  leading: new Icon(Icons.photo_album),
-                  title: new Text('Photos'),
-                  onTap: () {},          
-                ),
-                new ListTile(
-                  leading: new Icon(Icons.videocam),
-                  title: new Text('Video'),
-                  onTap: () {},          
-                ),
-              ],
-            );
-        });
-      }
-    }
+    _paymentBloc ??= Provider.of(context).paymentBloc;
     super.didChangeDependencies();
   }
   

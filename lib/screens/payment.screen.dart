@@ -2,6 +2,7 @@ import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/payment.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
+import 'package:desafio_picpay_mobile/components/payment_bottom_sheet.component.dart';
 import 'package:desafio_picpay_mobile/screens/contacts.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -133,7 +134,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
                 InkWell(
-                  child: new Text(
+                  child: Text(
                     'Editar',
                     style: TextStyle(
                       color: Colors.green,
@@ -160,11 +161,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         _cardBloc.card,
                         double.parse(_controller.text)
                       );
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => ContactsScreen()
-                        )
-                      );
+                      openTransactionModal();
                     }
                   },
                   color: _textColor,
@@ -184,6 +181,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void openTransactionModal() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) => PaymentBottomSheet()
     );
   }
 }
