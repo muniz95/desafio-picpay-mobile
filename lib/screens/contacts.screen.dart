@@ -2,6 +2,7 @@ import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/payment.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
 import 'package:desafio_picpay_mobile/components/contact_box.component.dart';
+import 'package:desafio_picpay_mobile/components/payment_bottom_sheet.component.dart';
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +21,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   @override
   void didChangeDependencies() {
-    _contactsBloc ??= Provider.of(context).contactsBloc..getAllContacts();
+    _contactsBloc ??= Provider.of(context).contactsBloc;
     _paymentBloc ??= Provider.of(context).paymentBloc;
     super.didChangeDependencies();
+    _contactsBloc.getAllContacts().then((onValue) {
+      if (_paymentBloc.transaction != null) {
+        openTransactionModal();
+      }
+    });
   }
   
   @override
@@ -34,9 +40,17 @@ class _ContactsScreenState extends State<ContactsScreen> {
         children: <Widget>[
           Container(
             height: 100,
+            padding: EdgeInsets.only(bottom: 10, left: 8),
             child: Align(
               alignment: Alignment.bottomLeft,
-              child: Text("Contatos", style: TextStyle(fontSize: 18, color: Colors.white),),
+              child: Text(
+                "Contatos",
+                style: TextStyle(
+                  fontSize: 26,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
           Center(
@@ -92,6 +106,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void openTransactionModal() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) =>
+        PaymentBottomSheet(transaction: _paymentBloc.transaction,)
     );
   }
 }

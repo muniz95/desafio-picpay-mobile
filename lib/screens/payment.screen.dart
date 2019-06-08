@@ -161,8 +161,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         _cardBloc.card,
                         double.parse(_controller.text)
                       );
-                      openTransactionModal();
                     }
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => ContactsScreen()
+                      )
+                    );
                   },
                   color: _textColor,
                   child: Text(
@@ -181,13 +185,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  void openTransactionModal() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => PaymentBottomSheet()
     );
   }
 }
