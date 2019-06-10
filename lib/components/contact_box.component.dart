@@ -1,22 +1,26 @@
+import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
 import 'package:desafio_picpay_mobile/screens/no_card_found.screen.dart';
+import 'package:desafio_picpay_mobile/screens/payment.screen.dart';
 import 'package:flutter/material.dart';
 
 class ContactBoxComponent extends StatelessWidget {
-  final Contact contact;
-  final ContactsBloc bloc;
+  final Contact _contact;
+  final ContactsBloc _contactsBloc;
+  final CardBloc _cardBloc;
   
-  ContactBoxComponent(this.contact, this.bloc);
+  ContactBoxComponent(this._contact, this._contactsBloc, this._cardBloc);
   
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        bloc.select(contact);
+        _contactsBloc.select(_contact);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (BuildContext context) => NoCardFoundScreen(),
+            builder: (BuildContext context) => 
+              _cardBloc.card == null ? NoCardFoundScreen() : PaymentScreen(),
           )
         );
       },
@@ -32,7 +36,7 @@ class ContactBoxComponent extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 35,
                   backgroundImage: NetworkImage(
-                    contact.img
+                    _contact.img
                   ),
                 ),
               ),
@@ -44,7 +48,7 @@ class ContactBoxComponent extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    contact.username,
+                    _contact.username,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -55,7 +59,7 @@ class ContactBoxComponent extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    contact.name,
+                    _contact.name,
                     style: TextStyle(
                       color: Colors.white,
                     ),

@@ -1,3 +1,4 @@
+import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/payment.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
@@ -13,6 +14,7 @@ class ContactsScreen extends StatefulWidget {
 
 class _ContactsScreenState extends State<ContactsScreen> {
   ContactsBloc _contactsBloc;
+  CardBloc _cardBloc;
   PaymentBloc _paymentBloc;
   TextEditingController editingController = TextEditingController();
 
@@ -22,6 +24,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
   @override
   void didChangeDependencies() {
     _contactsBloc ??= Provider.of(context).contactsBloc;
+    _cardBloc ??= Provider.of(context).cardBloc;
     _paymentBloc ??= Provider.of(context).paymentBloc;
     super.didChangeDependencies();
     _contactsBloc.getAllContacts().then((onValue) {
@@ -94,7 +97,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int i) => ContactBoxComponent(snapshot.data[i], _contactsBloc),
+                    itemBuilder: (BuildContext context, int i) =>
+                      ContactBoxComponent(snapshot.data[i], _contactsBloc, _cardBloc),
                   ),
                 );
               }

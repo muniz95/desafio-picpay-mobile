@@ -2,7 +2,6 @@ import 'package:desafio_picpay_mobile/bloc/card.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/contacts.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/payment.bloc.dart';
 import 'package:desafio_picpay_mobile/bloc/provider.dart';
-import 'package:desafio_picpay_mobile/components/payment_bottom_sheet.component.dart';
 import 'package:desafio_picpay_mobile/screens/contacts.screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
