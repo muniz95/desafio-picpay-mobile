@@ -23,6 +23,8 @@ class PaymentBloc {
     );
   }
 
+  void clearTransaction() => _transaction.add(null);
+
   void dispose() {
     _payment.close();
     _transaction.close();

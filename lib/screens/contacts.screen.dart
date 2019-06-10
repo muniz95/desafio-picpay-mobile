@@ -114,6 +114,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
       context: context,
       builder: (BuildContext context) =>
         PaymentBottomSheet(transaction: _paymentBloc.transaction,)
-    );
+    ).then((value)  => _paymentBloc.clearTransaction());
   }
 }
