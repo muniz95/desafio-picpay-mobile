@@ -160,12 +160,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         _cardBloc.card,
                         double.parse(_controller.text)
                       );
+
+                      _paymentBloc.setPayment(0);
+
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => ContactsScreen()
+                        )
+                      );
                     }
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => ContactsScreen()
-                      )
-                    );
                   },
                   color: _textColor,
                   child: Text(
