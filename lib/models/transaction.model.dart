@@ -19,4 +19,21 @@ class Transaction {
   }
 
   Transaction({this.id, this.contact, this.card, this.doneAt, this.total});
+
+  factory Transaction.clone(Transaction transaction) =>
+    Transaction(
+      card: transaction.card,
+      contact: transaction.contact,
+      doneAt: transaction.doneAt,
+      id: transaction.id,
+      total: transaction.total,
+    );
+
+  static fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      doneAt: DateTime.fromMillisecondsSinceEpoch(json['timestamp'] * 1000),
+      id: json['id'],
+      total: json['value'] as double
+    );
+  }
 }

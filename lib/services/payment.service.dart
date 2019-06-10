@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:desafio_picpay_mobile/models/card.model.dart';
+import 'package:desafio_picpay_mobile/models/contact.model.dart';
+import 'package:desafio_picpay_mobile/models/transaction.model.dart';
 import 'package:dio/dio.dart';
 
 class PaymentService {
@@ -10,27 +13,23 @@ class PaymentService {
     client.options.headers = {"content-type": "application/json"};
   }
   
-  // Future<Map<String, dynamic>> addTransaction() async {
-  //   final response = await client.post(
-  //     'http://careers.picpay.com/tests/mobdev/transaction',
-  //     data: {  
-  //       "card_number":"1111111111111111",
-  //       "cvv":789,
-  //       "value":79.9,
-  //       "expiry_date":"01/18",
-  //       "destination_user_id":1002
-  //     }
-  //   );
-  //   if (response.statusCode == 200) {
-  //     var data = jsonDecode(response.data);
-  //     List<Contact> contacts = data
-  //       .cast<Map<String, dynamic>>()
-  //       .map(Contact.fromJsonStatic)
-  //       .toList()
-  //       .cast<Contact>();
-  //     return contacts;
-  //   } else {
-  //     throw Exception;
-  //   }
-  // }
+  Future<Transaction> addTransaction(Contact contact, Card card, double total) async {
+    final response = await client.post(
+      'http://careers.picpay.com/tests/mobdev/transaction',
+      data: {  
+        "card_number": card.number,
+        "cvv": card.cvv,
+        "value": total,
+        "expiry_date": card.expiration,
+        "destination_user_id": contact.id
+      }
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.data);
+      Transaction transaction = Transaction.fromJson(data['transaction']);
+      return transaction;
+    } else {
+      throw Exception;
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:desafio_picpay_mobile/bloc/provider.dart';
 import 'package:desafio_picpay_mobile/components/contact_box.component.dart';
 import 'package:desafio_picpay_mobile/components/payment_bottom_sheet.component.dart';
 import 'package:desafio_picpay_mobile/models/contact.model.dart';
+import 'package:desafio_picpay_mobile/models/transaction.model.dart';
 import 'package:flutter/material.dart';
 
 class ContactsScreen extends StatefulWidget {
@@ -114,10 +115,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
   }
 
   void openTransactionModal() {
+    Transaction transaction = Transaction.clone(_paymentBloc.transaction);
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) =>
-        PaymentBottomSheet(transaction: _paymentBloc.transaction,)
+        PaymentBottomSheet(transaction: transaction,)
     ).then((value)  => _paymentBloc.clearTransaction());
   }
 }

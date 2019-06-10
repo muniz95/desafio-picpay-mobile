@@ -79,6 +79,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                       padding: EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
                         cursorColor: Colors.green,
+                        initialValue: _bloc.number,
                         decoration: InputDecoration(
                           hintText: "Número do cartão",
                           hintStyle: TextStyle(
@@ -108,6 +109,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                       padding: EdgeInsets.only(left: 15, right: 15),
                       child: TextFormField(
                         cursorColor: Colors.green,
+                        initialValue: _bloc.titular,
                         decoration: InputDecoration(
                           hintText: "Nome do titular",
                           hintStyle: TextStyle(
@@ -135,6 +137,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                             padding: EdgeInsets.only(left: 15, right: 5),
                             alignment: Alignment.centerLeft,
                             child: TextFormField(
+                              initialValue: _bloc.expiration,
                               decoration: InputDecoration(
                                 hintText: "Vencimento",
                                 hintStyle: TextStyle(
@@ -152,13 +155,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                               ],
                               keyboardType: TextInputType.number,
                               maxLength: 5,
-                              onSaved: (String val) {
-                                List<String> dateValues = val.split("/");
-                                int year = int.parse("20${dateValues[1]}");
-                                int month = int.parse(dateValues[0]);
-                                DateTime expiration = DateTime(year, month);
-                                _bloc.setExpiration(expiration);
-                              },
+                              onSaved: _bloc.setExpiration,
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -185,6 +182,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                           child: Container(
                             padding: EdgeInsets.only(left: 5, right: 15),
                             child: TextFormField(
+                              initialValue: _bloc.cvv,
                               decoration: InputDecoration(
                                 hintText: "CVV",
                                 hintStyle: TextStyle(
@@ -198,9 +196,7 @@ class _CardFormScreenState extends State<CardFormScreen> {
                               ),
                               keyboardType: TextInputType.number,
                               maxLength: 3,
-                              onSaved: (String val) {
-                                _bloc.setCvv(int.parse(val));
-                              },
+                              onSaved: _bloc.setCvv,
                               style: TextStyle(
                                 color: Colors.white,
                               ),

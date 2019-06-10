@@ -1,7 +1,7 @@
 class Card {
   final int number;
   final String titular;
-  final DateTime expiration;
+  final String expiration;
   final String flagship;
   final int cvv;
 
